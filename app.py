@@ -1,22 +1,20 @@
-import psycopg2
 import hashlib
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, session, make_response
 from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
+    JWTManager, jwt_required,
     get_jwt_identity
 )
 from serverconnection import connect_to_database
-from flask_cors import CORS, cross_origin
-from jwt import encode, ExpiredSignatureError, InvalidTokenError, decode
-from functools import wraps
+from flask_cors import CORS
+from jwt import decode, encode, ExpiredSignatureError, InvalidTokenError
 
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 app.config['JWT_SECRET_KEY'] = 'super secret'
 app.config["SESSION_PERMANENT"] = False
 jwt = JWTManager(app)
-
+# encode, ExpiredSignatureError, InvalidTokenError, decode
 # Set the secret key for the session
 app.secret_key = "1234"
 
@@ -122,6 +120,7 @@ def login():
     jwt_token = generate_jwt(user[0])
 
     session["session"] = jwt_token
+    
 
     resp = make_response({"message": "You've been successfully logged in"})
 

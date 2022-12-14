@@ -1,7 +1,4 @@
-import oauth2
-import json
 
-import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 from serverconnection import conn
 from psycopg2 import Error
