@@ -9,13 +9,18 @@ from serverconnection import connect_to_database
 from flask_cors import CORS
 from jwt import decode, encode, ExpiredSignatureError, InvalidTokenError
 
+
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 app.config['JWT_SECRET_KEY'] = 'super secret'
 app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+
 jwt = JWTManager(app)
+
 # encode, ExpiredSignatureError, InvalidTokenError, decode
 # Set the secret key for the session
+
 app.secret_key = "1234"
 
 
@@ -120,7 +125,6 @@ def login():
     jwt_token = generate_jwt(user[0])
 
     session["session"] = jwt_token
-    
 
     resp = make_response({"message": "You've been successfully logged in"})
 
@@ -133,8 +137,6 @@ def login():
 @app.route("/user", methods=["GET"])
 def get_user():
     jwt_token = session["session"]
-
-
 
     try:
         payload = decode(jwt_token, app.secret_key, algorithms="HS256")
@@ -153,12 +155,12 @@ def get_user():
     )
     user = cur.fetchone()
     return [{
-               "id": user[0],
-               "first_name": user[2],
-               "last_name": user[3],
-               "email": user[1],
+        "id": user[0],
+        "first_name": user[2],
+        "last_name": user[3],
+        "email": user[1],
 
-           }], 200
+    }], 200
 
 
 # Function to protect a route with JWT authentication
