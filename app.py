@@ -169,6 +169,7 @@ def verify_mobile():
             send_sms(mobile_number, verification_code)
             return redirect("/verify-code", code=302)
 
+
     return render_template('verify_mobile.html', form=form)
 
 
@@ -199,7 +200,7 @@ def verify_code():
             return redirect("http://glenasare.com/", 200)
         else:
             # entered code is incorrect
-            return "Incorrect verification code"
+            return redirect("/verify-mobile", 401)
     return render_template('verify_code.html', form=form)
 
 
