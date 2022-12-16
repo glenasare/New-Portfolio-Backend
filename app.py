@@ -18,12 +18,14 @@ app.config['JWT_SECRET_KEY'] = 'super secret'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 import random
+import configparser
 
 jwt = JWTManager(app)
 
 # encode, ExpiredSignatureError, InvalidTokenError, decode
 # Set the secret key for the session
-
+config = configparser.ConfigParser()
+config.read('config.ini')
 app.secret_key = "1234"
 
 
@@ -144,8 +146,8 @@ def login():
 
 def send_sms(mobile_number, verification_code):
     # Your Account Sid and Auth Token from twilio.com/console
-    account_sid = 'AC3884413433c29299c4cbf0f6e3094a72'
-    auth_token = 'b54f592addbd493d293b9b109e6ed4a9'
+    account_sid = config['twilio']['account_sid']
+    auth_token = config['twilio']['auth_token']
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
