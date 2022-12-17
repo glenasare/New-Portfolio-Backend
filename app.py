@@ -13,7 +13,7 @@ from wtforms import StringField, SubmitField
 from twilio.rest import Client
 
 app = Flask(__name__, template_folder='templates')
-cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com","https://api.glenasare.com"])
+cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com", "https://api.glenasare.com"])
 app.config['JWT_SECRET_KEY'] = 'super secret'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -28,16 +28,6 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 app.secret_key = "1234"
 
-
-@app.before_request
-def make_session_permanent():
-    app.permanent_session_lifetime = timedelta(minutes=30)
-
-
-def load_user():
-    if "session" in session:
-        user = session["session"]
-        return user
 
 
 class MobileVerificationForm(FlaskForm):
