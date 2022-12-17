@@ -13,7 +13,7 @@ from wtforms import StringField, SubmitField
 from twilio.rest import Client
 
 app = Flask(__name__, template_folder='templates')
-cors = CORS(app)
+cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com","https://api.glenasare.com"])
 app.config['JWT_SECRET_KEY'] = 'super secret'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -169,7 +169,6 @@ def verify_mobile():
             send_sms(mobile_number, verification_code)
             return redirect("/verify-code", code=302)
 
-
     return render_template('verify_mobile.html', form=form)
 
 
@@ -191,7 +190,7 @@ def verify_code():
             cur.execute("SELECT * FROM userinfo WHERE access_token=%s", (verification_code,))
             user = cur.fetchone()
             if user is None:
-                cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code,user_id))
+                cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
                 conn.commit()
             else:
                 cur.execute("UPDATE userinfo SET access_token = %s where id=%s ", (access_code, user_id))

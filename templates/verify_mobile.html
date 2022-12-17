@@ -222,7 +222,7 @@ padding-left: 10px;
                             <tbody>
                             <tr>
                                 <td class="content-cell">
-                                    <h1>Enter Phone Number</h1>
+                                    <h1>Enter Phone Number To Send Verification Code</h1>
 
                                     <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0"
@@ -243,12 +243,12 @@ padding-left: 10px;
                                                         </center>
                                                     </v:roundrect><![endif]-->
                                                     <div class="card">
-                                                        <h2>Enter Verification Code</h2>
+
                                                         <div class="container">
 
                                                             <form method="post">
                                                                 {{ form.csrf_token }}
-                                                                {{ form.mobile_number.label }} {{ form.mobile_number }}
+                                                                {{ form.mobile_number.label }} : {{ form.mobile_number }}
                                                                 <div>
                                                                     <input class="btn btn-primary" type="submit"
                                                                            value="Send Verification Code">
