@@ -1,7 +1,7 @@
 import hashlib
 import string
 from datetime import datetime, timedelta
-from flask import Flask, request, jsonify, session, make_response, redirect, render_template
+from flask import Flask, request, jsonify, make_response, redirect, render_template
 from flask_jwt_extended import (
     JWTManager, jwt_required,
     get_jwt_identity
@@ -11,23 +11,19 @@ from flask_cors import CORS
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from twilio.rest import Client
-
-app = Flask(__name__, template_folder='templates')
-cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com", "https://api.glenasare.com"])
-app.config['JWT_SECRET_KEY'] = 'super secret'
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
 import random
 import configparser
 
-jwt = JWTManager(app)
+app = Flask(__name__, template_folder='templates')
+cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com", "https://api.glenasare.com"])
 
-# encode, ExpiredSignatureError, InvalidTokenError, decode
-# Set the secret key for the session
+
+
+
+
 config = configparser.ConfigParser()
 config.read('config.ini')
 app.secret_key = "1234"
-
 
 
 class MobileVerificationForm(FlaskForm):
@@ -99,12 +95,8 @@ user_id = ""
 # Function to log in a user
 @app.route('/login', methods=['POST'])
 def login():
-    # Check if there is already an access token in the session
-    global resp, user_id
 
-    if user_id:
-        resp = make_response({"message": "User already Logged in"})
-        return resp, 400
+    global resp, user_id
 
     # Get the data from the request
     data = request.get_json()
@@ -219,13 +211,6 @@ def get_user():
 
 
 # Function to protect a route with JWT authentication
-@app.route('/protected', methods=['GET'])
-@jwt_required
-def protected():
-    # Get the user's identity from the JWT
-    current_user = get_jwt_identity()
-
-    return jsonify(logged_in_as=current_user), 200
 
 
 @app.route('/logout', methods=['POST', 'GET'])
