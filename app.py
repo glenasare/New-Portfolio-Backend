@@ -102,7 +102,7 @@ def login():
     # Check if there is already an access token in the session
     global resp, user_id
 
-    if "session" in session:
+    if user_id:
         resp = make_response({"message": "User already Logged in"})
         return resp, 400
 
