@@ -106,7 +106,7 @@ def login():
     cur.execute("SELECT * FROM userinfo WHERE lower(email) = lower(%s) AND ""password=%s", (email, hashed_password))
     user = cur.fetchone()
 
-    response = make_response("login successful",303)
+    response = make_response("login successful", 200)
     response.headers["Access-Control-Allow-Origin"] = "https://glenasare.com"
 
     if user is None:
