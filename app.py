@@ -106,8 +106,7 @@ def login():
     cur.execute("SELECT * FROM userinfo WHERE lower(email) = lower(%s) AND ""password=%s", (email, hashed_password))
     user = cur.fetchone()
 
-    response = make_response("login successful", 200)
-    response.headers["Access-Control-Allow-Origin"] = "https://glenasare.com"
+
 
     if user is None:
         return jsonify({"msg": "Invalid username or password"}), 401
@@ -115,7 +114,7 @@ def login():
     # Create a JSON Web Token with an expiration time of 30 minutes
     if user:
         user_id = user[0]
-        return response
+        return redirect("/verify-mobile", 303)
 
     if not user:
         return {"message": "User not found"}, 404
