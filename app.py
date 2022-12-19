@@ -21,7 +21,6 @@ cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.heroku
 app.secret_key = "secret key"
 
 
-
 class MobileVerificationForm(FlaskForm):
     mobile_number = StringField('Mobile Number')
     submit = SubmitField('Send Code')
@@ -107,7 +106,7 @@ def login():
     cur.execute("SELECT * FROM userinfo WHERE lower(email) = lower(%s) AND ""password=%s", (email, hashed_password))
     user = cur.fetchone()
 
-    response = make_response("login successful")
+    response = make_response("login successful",303)
     response.headers["Access-Control-Allow-Origin"] = "https://glenasare.com"
 
     if user is None:
@@ -116,7 +115,7 @@ def login():
     # Create a JSON Web Token with an expiration time of 30 minutes
     if user:
         user_id = user[0]
-        return redirect("/verify-mobile", 302)
+        return response
 
     if not user:
         return {"message": "User not found"}, 404
