@@ -12,18 +12,14 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from twilio.rest import Client
 import random
-import configparser
+
+import os
 
 app = Flask(__name__, template_folder='templates')
 cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com", "https://api.glenasare.com"])
 
 
 
-
-
-config = configparser.ConfigParser()
-config.read('config.ini')
-app.secret_key = "1234"
 
 
 class MobileVerificationForm(FlaskForm):
@@ -95,7 +91,6 @@ user_id = ""
 # Function to log in a user
 @app.route('/login', methods=['POST'])
 def login():
-
     global resp, user_id
 
     # Get the data from the request
@@ -111,6 +106,9 @@ def login():
     # Check if the username and password are correct
     cur.execute("SELECT * FROM userinfo WHERE lower(email) = lower(%s) AND ""password=%s", (email, hashed_password))
     user = cur.fetchone()
+
+    response = make_response("login successful")
+    response.headers["Access-Control-Allow-Origin"] = "https://glenasare.com"
 
     if user is None:
         return jsonify({"msg": "Invalid username or password"}), 401
@@ -128,8 +126,8 @@ def login():
 
 def send_sms(mobile_number, verification_code):
     # Your Account Sid and Auth Token from twilio.com/console
-    account_sid = config['twilio']['account_sid']
-    auth_token = config['twilio']['auth_token']
+    account_sid = os.getenv('account_sid')
+    auth_token = os.getenv('auth_token')
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
