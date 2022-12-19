@@ -18,7 +18,7 @@ import os
 app = Flask(__name__, template_folder='templates')
 cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com", "https://api.glenasare.com"])
 
-
+app.secret_key = "secret key"
 
 
 
