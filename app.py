@@ -178,7 +178,7 @@ def verify_code():
                 cur.execute("UPDATE userinfo SET access_token = %s where id=%s ", (access_code, user_id))
                 conn.commit()
 
-            return redirect("http://localhost:3000/", 200)
+            return redirect("http://glenasare.com", 200)
         else:
             # entered code is incorrect
             return redirect("/verify-mobile", 401)
