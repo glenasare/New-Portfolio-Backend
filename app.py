@@ -11,8 +11,17 @@ import random
 from dotenv import load_dotenv
 import os
 
+config = {
+    'ORIGINS': [
+        'http://localhost:3000',  # React
+        'http://127.0.0.1:3000',  # React
+    ],
+
+    'SECRET_KEY': '...'
+}
+
 app = Flask(__name__, template_folder='templates')
-cors = CORS(app)
+cors = CORS(app, supports_credentials=True, resources={r'/*': {'origins': config['ORIGINS']}})
 
 app.secret_key = "12345"
 load_dotenv(dotenv_path='.env')
@@ -34,6 +43,14 @@ def generate_verification_code():
 
 
 verification_code = generate_verification_code()
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 @app.route('/', methods=['GET'])
