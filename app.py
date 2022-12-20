@@ -11,17 +11,8 @@ import random
 from dotenv import load_dotenv
 import os
 
-config = {
-    'ORIGINS': [
-        'http://localhost:3000',  # React
-        'http://127.0.0.1:3000',  # React
-    ],
-
-    'SECRET_KEY': '...'
-}
-
 app = Flask(__name__, template_folder='templates')
-cors = CORS(app, supports_credentials=True, resources={r'/*': {'origins': config['ORIGINS']}})
+cors = CORS(app, supports_credentials=True, )
 
 app.secret_key = "12345"
 load_dotenv(dotenv_path='.env')
