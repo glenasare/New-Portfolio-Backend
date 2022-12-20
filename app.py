@@ -181,7 +181,7 @@ def verify_code():
             return redirect("https://glenasare.com/", 200)
         else:
             # entered code is incorrect
-            return redirect("/verify-mobile", 303)
+            return redirect("https://glenasare.com/", 303)
     return render_template('verify_code.html', form=form)
 
 
