@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__, template_folder='templates')
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app)
 
 app.secret_key = "12345"
 load_dotenv(dotenv_path='.env')
