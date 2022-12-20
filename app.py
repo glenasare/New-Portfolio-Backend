@@ -126,7 +126,7 @@ def login():
     # Create a JSON Web Token with an expiration time of 30 minutes
     if user:
         user_id = user[0]
-        return redirect("/verify-mobile", code=200)
+        return make_response("redirecting for verification", 200)
 
     if not user:
         return {"message": "User not found"}, 404
