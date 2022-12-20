@@ -165,7 +165,7 @@ def verify_code():
         # compare entered code with the generated code to verify mobile number
         if entered_code == verification_code:
             # mobile number is verified
-            print(verification_code,entered_code,user_id)
+            print(verification_code, entered_code, user_id)
 
             access_code = verification_code
 
@@ -178,10 +178,10 @@ def verify_code():
                 cur.execute("UPDATE userinfo SET access_token = %s where id=%s ", (access_code, user_id))
                 conn.commit()
 
-            return redirect("https://glenasare.com/", 200)
+            return redirect("http://localhost:3000/", 200)
         else:
             # entered code is incorrect
-            return redirect("https://glenasare.com/", 303)
+            return redirect("http://localhost:3000/", 303)
     return render_template('verify_code.html', form=form)
 
 
@@ -201,13 +201,13 @@ def get_user():
         "SELECT id, email, first_name, last_name FROM users WHERE id = %s", (user_id,)
     )
     user = cur.fetchone()
-    return make_response([{
+    return make_response(jsonify([{
         "id": user[0],
         "first_name": user[2],
         "last_name": user[3],
         "email": user[1],
 
-    }], 200)
+    }]), 200)
 
 
 # Function to protect a route with JWT authentication
