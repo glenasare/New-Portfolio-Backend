@@ -181,7 +181,7 @@ def verify_code():
             return redirect("http://glenasare.com", 200)
         else:
             # entered code is incorrect
-            return redirect("/verify-mobile", 401)
+            return redirect("/verify-mobile", 303)
     return render_template('verify_code.html', form=form)
 
 
@@ -201,13 +201,13 @@ def get_user():
         "SELECT id, email, first_name, last_name FROM users WHERE id = %s", (user_id,)
     )
     user = cur.fetchone()
-    return [{
+    return make_response([{
         "id": user[0],
         "first_name": user[2],
         "last_name": user[3],
         "email": user[1],
 
-    }], 200
+    }], 200)
 
 
 # Function to protect a route with JWT authentication
