@@ -2,23 +2,20 @@ import hashlib
 import string
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, make_response, redirect, render_template
-from flask_jwt_extended import (
-    JWTManager, jwt_required,
-    get_jwt_identity
-)
 from serverconnection import connect_to_database
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from twilio.rest import Client
 import random
-
+from dotenv import load_dotenv
 import os
 
 app = Flask(__name__, template_folder='templates')
-cors = CORS(app, origins=['http://localhost:3000', "https://my-app-flaskk.herokuapp.com", "https://api.glenasare.com"])
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-app.secret_key = "secret key"
+app.secret_key = "12345"
+load_dotenv(dotenv_path='.env')
 
 
 class MobileVerificationForm(FlaskForm):
@@ -106,15 +103,13 @@ def login():
     cur.execute("SELECT * FROM userinfo WHERE lower(email) = lower(%s) AND ""password=%s", (email, hashed_password))
     user = cur.fetchone()
 
-
-
     if user is None:
         return jsonify({"msg": "Invalid username or password"}), 401
 
     # Create a JSON Web Token with an expiration time of 30 minutes
     if user:
         user_id = user[0]
-        return redirect("/verify-mobile", 303)
+        return redirect("/verify-mobile", code=200)
 
     if not user:
         return {"message": "User not found"}, 404
@@ -124,8 +119,8 @@ def login():
 
 def send_sms(mobile_number, verification_code):
     # Your Account Sid and Auth Token from twilio.com/console
-    account_sid = os.getenv('account_sid')
-    auth_token = os.getenv('auth_token')
+    account_sid = os.getenv("ACCOUNT_SID")
+    auth_token = os.getenv("AUTH_TOKEN")
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
@@ -162,6 +157,7 @@ def verify_code():
         # compare entered code with the generated code to verify mobile number
         if entered_code == verification_code:
             # mobile number is verified
+            print(verification_code)
 
             access_code = verification_code
 
@@ -174,7 +170,7 @@ def verify_code():
                 cur.execute("UPDATE userinfo SET access_token = %s where id=%s ", (access_code, user_id))
                 conn.commit()
 
-            return redirect("http://glenasare.com/", 200)
+            return redirect("http://localhost:3000/", 200)
         else:
             # entered code is incorrect
             return redirect("/verify-mobile", 401)
