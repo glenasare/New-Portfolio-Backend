@@ -180,8 +180,6 @@ def verify_code():
 
 @app.route("/user", methods=["GET"])
 def get_user():
-    # print(user_info)
-    # return str(user_info)
     conn = connect_to_database()
     cur = conn.cursor()
 
