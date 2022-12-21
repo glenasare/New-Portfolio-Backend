@@ -152,13 +152,13 @@ def verify_mobile():
 
     return render_template('verify_mobile.html', form=form)
 
-
-form = CodeVerificationForm()
-entered_code = form.code.data
-
+entered_code = " "
 
 @app.route("/verify-code", methods=["GET", 'POST'])
 def verify_code():
+    form = CodeVerificationForm()
+    entered_code = form.code.data
+
     conn = connect_to_database()
     cur = conn.cursor()
     if form.validate_on_submit():
@@ -219,7 +219,7 @@ def logout():
 
     userid = str(user_id)
 
-    cur.execute("UPDATE userinfo SET access_token = null where access_token = %s ", (entered_code,))
+    cur.execute("UPDATE userinfo SET access_token = null where access_token = %s ", (verification_code,))
     conn.commit()
 
     resp = make_response({"message": "You have been logged out successfully"}, 202)
