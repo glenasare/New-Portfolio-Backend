@@ -195,20 +195,18 @@ def get_user():
     cur.execute("SELECT * FROM userinfo WHERE access_token=%s", (verification_code,))
     user = cur.fetchone()
     if not user:
-        return make_response({"message"}, "Invalid Token Please Login", 401)
+        return make_response({"message": "Invalid Token Please Login"}, 401)
 
     cur.execute(
         "SELECT id, email, first_name, last_name FROM users WHERE id = %s", (user_id,)
     )
     user = cur.fetchone()
-    response = make_response([{
-        "id": user[0]},
+    response = [{"id": user[0]},
         {"first_name": user[2]},
         {"last_name": user[3]},
         {"email": user[1]}
-
-    ], 200)
-    return "Hello World"
+    ]
+    return response
 
 
 # Function to protect a route with JWT authentication
