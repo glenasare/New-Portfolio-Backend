@@ -152,7 +152,9 @@ def verify_mobile():
 
     return render_template('verify_mobile.html', form=form)
 
+
 entered_code = " "
+
 
 @app.route("/verify-code", methods=["GET", 'POST'])
 def verify_code():
@@ -169,16 +171,8 @@ def verify_code():
             print(user_id)
 
             access_code = verification_code
-            cur.execute("SELECT * FROM userinfo WHERE access_token::text = %s ",
-                        (access_code,))
-            user = cur.fetchone()
-            if user is None:
-                cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
-                conn.commit()
-                return redirect("http://localhost:3000/", 200)
-            elif user:
-                cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
-                conn.commit()
+            cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
+            conn.commit()
 
             return redirect("http://localhost:3000/", 200)
         else:
@@ -219,7 +213,7 @@ def logout():
 
     userid = str(user_id)
 
-    cur.execute("UPDATE userinfo SET access_token = null where access_token = %s ", (verification_code,))
+    cur.execute("UPDATE userinfo SET access_token = 000000 where access_token = %s ", (verification_code,))
     conn.commit()
 
     resp = make_response({"message": "You have been logged out successfully"}, 202)
