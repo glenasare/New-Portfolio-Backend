@@ -165,18 +165,11 @@ def verify_code():
         # compare entered code with the generated code to verify mobile number
         if entered_code == verification_code:
             # mobile number is verified
-            print(verification_code, entered_code, user_id)
 
             access_code = verification_code
 
-            cur.execute("SELECT * FROM userinfo WHERE access_token=%s", (verification_code,))
-            user = cur.fetchone()
-            if user is None:
-                cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
-                conn.commit()
-            else:
-                cur.execute("UPDATE userinfo SET access_token = %s where id=%s ", (access_code, user_id))
-                conn.commit()
+            cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
+            conn.commit()
 
             return redirect("http://localhost:3000/", 200)
         else:
@@ -202,10 +195,10 @@ def get_user():
     )
     user = cur.fetchone()
     response = [{"id": user[0]},
-        {"first_name": user[2]},
-        {"last_name": user[3]},
-        {"email": user[1]}
-    ]
+                {"first_name": user[2]},
+                {"last_name": user[3]},
+                {"email": user[1]}
+                ]
     return response
 
 
