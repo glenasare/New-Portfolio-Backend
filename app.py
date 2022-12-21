@@ -201,13 +201,14 @@ def get_user():
         "SELECT id, email, first_name, last_name FROM users WHERE id = %s", (user_id,)
     )
     user = cur.fetchone()
-    return (jsonify([{
+    resp = make_response([{
         "id": user[0],
         "first_name": user[2],
         "last_name": user[3],
         "email": user[1],
 
-    }]), 200)
+    }],200)
+    return resp
 
 
 # Function to protect a route with JWT authentication
