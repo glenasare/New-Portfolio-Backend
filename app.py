@@ -208,7 +208,7 @@ def get_user():
         {"email": user[1]}
 
     ], 200)
-    return {'userData': response}
+    return "Hello World"
 
 
 # Function to protect a route with JWT authentication
