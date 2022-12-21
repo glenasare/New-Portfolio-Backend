@@ -167,8 +167,8 @@ def verify_code():
             # mobile number is verified
 
             access_code = verification_code
-            cur.execute("SELECT * FROM userinfo WHERE access_token::text = %s ;",
-                        access_code)
+            cur.execute("SELECT * FROM userinfo WHERE access_token::text = %s ",
+                        (access_code,))
             user = cur.fetchone()
             if user is None:
                 cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
