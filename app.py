@@ -174,10 +174,10 @@ def verify_code():
             cur.execute("UPDATE userinfo SET access_token = %s where id = %s ", (access_code, user_id))
             conn.commit()
 
-            return redirect("http://glenasare.com/", 200)
+            return redirect("https://d2pqzfffokrmbj.cloudfront.net/", 200)
         else:
             # entered code is incorrect
-            return redirect("http://glenasare.com/", 303)
+            return redirect("https://d2pqzfffokrmbj.cloudfront.net/", 303)
     return render_template('verify_code.html', form=form)
 
 
